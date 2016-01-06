@@ -1,0 +1,152 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ajscape.pixatoon.fragments.FilterFragment">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/background">
+        <HorizontalScrollView
+            android:id="@+id/scrollBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/colorCartoonFilterBtn"
+                        android:layout_width="@dimen/filter_btn_size"
+                        android:layout_height="@dimen/filter_btn_size"
+                        android:src="@drawable/icon_filter_colorcartoon"
+                        android:scaleType="fitCenter"
+                        android:padding="5dp"
+                        android:layout_margin="3dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Color Cartoon"
+                        android:textSize="12dp"
+                        android:textColor="#ffffffff"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/grayCartoonFilterBtn"
+                        android:layout_width="@dimen/filter_btn_size"
+                        android:layout_height="@dimen/filter_btn_size"
+                        android:src="@drawable/icon_filter_graycartoon"
+                        android:scaleType="fitCenter"
+                        android:padding="5dp"
+                        android:layout_margin="3dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gray Cartoon"
+                        android:textSize="12dp"
+                        android:textColor="#ffffffff"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/colorSketchFilterBtn"
+                        android:layout_width="@dimen/filter_btn_size"
+                        android:layout_height="@dimen/filter_btn_size"
+                        android:src="@drawable/icon_filter_colorsketch"
+                        android:scaleType="fitCenter"
+                        android:padding="5dp"
+                        android:layout_margin="3dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Color Sketch"
+                        android:textSize="12dp"
+                        android:textColor="#ffffffff"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/pencilSketchFilterBtn"
+                        android:layout_width="@dimen/filter_btn_size"
+                        android:layout_height="@dimen/filter_btn_size"
+                        android:src="@drawable/icon_filter_pencilsketch"
+                        android:scaleType="fitCenter"
+                        android:padding="5dp"
+                        android:layout_margin="3dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pencil Sketch"
+                        android:textSize="12dp"
+                        android:textColor="#ffffffff"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/pixelArtFilterBtn"
+                        android:layout_width="@dimen/filter_btn_size"
+                        android:layout_height="@dimen/filter_btn_size"
+                        android:src="@drawable/icon_filter_pixelart"
+                        android:scaleType="fitCenter"
+                        android:padding="5dp"
+                        android:layout_margin="3dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pixel Art"
+                        android:textSize="12dp"
+                        android:textColor="#ffffffff"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/oilPaintFilterBtn"
+                        android:layout_width="@dimen/filter_btn_size"
+                        android:layout_height="@dimen/filter_btn_size"
+                        android:src="@drawable/icon_filter_oilpaint"
+                        android:scaleType="fitCenter"
+                        android:padding="5dp"
+                        android:layout_margin="3dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Oil Paint"
+                        android:textSize="12dp"
+                        android:textColor="#ffffffff"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+</FrameLayout>
