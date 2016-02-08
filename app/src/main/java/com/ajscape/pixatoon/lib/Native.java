@@ -1,7 +1,7 @@
 package com.ajscape.pixatoon.lib;
 
 /**
- * Created by AtulJadhav on 9/21/2015.
+ * Native method interface
  */
 public class Native {
     public static native void setScaleFactor(double scaleFactor);

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by AtulJadhav on 9/20/2015.
+ * Image Filter Manager (singelton) to control filters configuration and selection from UI
  */
 
 public class FilterManager extends Application {
@@ -21,19 +21,31 @@ public class FilterManager extends Application {
     private ArrayList<Filter> mFilterList;
     private HashMap<FilterType, Filter> mFilterType2FilterMap;
     private Filter mCurrentFilter;
-    private double mFilterScaleFactor;
     private FilterType mDefaultFilterType = FilterType.COLOR_CARTOON;
     private Filter mDefaultFilter;
+
+    // Filter processing scaling factor
+    private double mFilterScaleFactor;
+
+    // Flag to check if sketch texture is flipped horizontally
     private boolean mSketchFlip = false;
 
+    // Private static singleton instance
     private static FilterManager sInstance;
 
+    /**
+     * Get singleton instance
+     * @return
+     */
     public static FilterManager getInstance() {
         if(sInstance == null)
             sInstance = new FilterManager();
         return sInstance;
     }
 
+    /**
+     * Private constructor
+     */
     private FilterManager() {
         mFilterList = new ArrayList<>();
         mFilterType2FilterMap = new HashMap<>();
@@ -42,7 +54,7 @@ public class FilterManager extends Application {
         // initialize filters and add to list
         buildFilterList();
 
-        // hash filters to maps for easy retreival
+        // hash filters to map for easy retrieval
         for( Filter filter : mFilterList) {
             mFilterType2FilterMap.put( filter.getType(), filter);
         }
@@ -55,6 +67,9 @@ public class FilterManager extends Application {
         mCurrentFilter = mDefaultFilter;
     }
 
+    /**
+     * Add implemented filters to filterList
+     */
     private void buildFilterList() {
         mFilterList.add( new ColorCartoonFilter(FilterType.COLOR_CARTOON));
         mFilterList.add( new GrayCartoonFilter(FilterType.GRAY_CARTOON));
@@ -64,16 +79,27 @@ public class FilterManager extends Application {
         mFilterList.add( new OilPaintFilter(FilterType.OIL_PAINT));
     }
 
+    /**
+     * Get current filter
+     * @return
+     */
     public Filter getCurrentFilter() {
         return mCurrentFilter;
     }
 
+    /**
+     * Set current filter with the given filter type
+     * @param filterType
+     */
     public void setCurrentFilter(FilterType filterType) {
         if(mCurrentFilter!=null)
             mCurrentFilter.resetConfig();
         mCurrentFilter = mFilterType2FilterMap.get(filterType);
     }
 
+    /**
+     * Reset filter manager
+     */
     public void reset() {
         if(mCurrentFilter!=null)
             mCurrentFilter.resetConfig();
@@ -81,15 +107,28 @@ public class FilterManager extends Application {
         setSketchFlip(false);
     }
 
+    /**
+     * Get filter scale factor
+     * @return
+     */
     public double getFilterScaleFactor() {
         return mFilterScaleFactor;
     }
 
+    /**
+     * Set filter processing scaling factor
+     * @param scaleFactor
+     */
     public void setFilterScaleFactor(double scaleFactor) {
         mFilterScaleFactor = scaleFactor;
         Native.setScaleFactor(mFilterScaleFactor);
     }
 
+    /**
+     * Horizontally flip sketch texture
+     * (Only required if gallery image is landscape, and is rotated by pictureView for better screen coverage)
+     * @param flip
+     */
     public void setSketchFlip(boolean flip) {
         if(mSketchFlip != flip) {
             mSketchFlip = flip;

@@ -7,7 +7,7 @@ import com.ajscape.pixatoon.lib.Native;
 import org.opencv.core.Mat;
 
 /**
- * Created by AtulJadhav on 9/20/2015.
+ * Pixel-Art filter implementation
  */
 public class PixelArtFilter extends Filter {
 

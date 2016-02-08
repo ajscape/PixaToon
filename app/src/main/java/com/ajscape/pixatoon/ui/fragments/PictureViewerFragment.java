@@ -24,7 +24,7 @@ import org.opencv.core.Mat;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Gallery picture viewer implemented as fragment
  */
 public class PictureViewerFragment extends Fragment {
 

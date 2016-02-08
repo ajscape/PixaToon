@@ -20,7 +20,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 /**
- * Created by AtulJadhav on 9/20/2015.
+ * Portrait OpenCV Camera View, modified from OpenCV JavaCameraView, for rendering camera frames with filter effects
  */
 public class OpenCvCameraView extends CameraBridgeViewBase implements PreviewCallback, Camera.PictureCallback {
 

@@ -19,7 +19,9 @@ import com.ajscape.pixatoon.ui.interfaces.FilterSelectorListener;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Filter selector panel implemented as fragment
+ */
 public class FilterSelectorFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "FilterSelectorFragment:";

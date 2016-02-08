@@ -26,7 +26,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Camera Viewer panel implemented as Fragment
  */
 public class CameraViewerFragment extends Fragment implements CvCameraViewListener2 {
 

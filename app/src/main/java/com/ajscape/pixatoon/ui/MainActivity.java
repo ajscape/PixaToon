@@ -40,10 +40,13 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Main Activity
+ */
 public class MainActivity extends Activity implements FilterSelectorListener, FilterConfigListener, View.OnClickListener {
 
     private static final int SELECT_PICTURE = 1;
-    private static final String TAG = "CameraActivity";
+    private static final String TAG = "MainActivity";
 
     private static final int ORIENTATION_THRESH = 10;
 
@@ -64,11 +67,15 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
 
     private FilterManager mFilterManager;
 
+    // Statically Load native OpenCV and image filter implementation libraries
     static {
         System.loadLibrary("opencv_java3");
         System.loadLibrary("image_filters");
     }
 
+    /**
+     * Picture capture callback implementation
+     */
     private FilterPictureCallback mPictureCallback = new FilterPictureCallback() {
         @Override
         public void onPictureCaptured(Bitmap pictureBitmap) {
@@ -77,13 +84,20 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     };
 
+    /**
+     * OnCreate method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+//      //  Hide navigation buttons and go full-screen, for devices without hardware navigation buttons
+//      getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 //                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
 //                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
         setContentView(R.layout.activity_main);
 
         mFilterManager = FilterManager.getInstance();
@@ -100,6 +114,7 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         mMsgTextView = (TextView) findViewById(R.id.msgTextView);
         mHandler = new Handler();
 
+        // Register onClick listeners
         mOpenPictureBtn.setOnClickListener(this);
         mSelectFilterBtn.setOnClickListener(this);
         mOpenCameraBtn.setOnClickListener(this);
@@ -117,6 +132,9 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
                 .add(R.id.filterViewer, mCameraViewerFragment)
                 .commit();
 
+        /**
+         * Device orientation listener implementation to appropriately rotate button and filter icons on orientation change
+         */
         mOrientationListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_UI) {
             @Override
             public void onOrientationChanged(int orientation) {
@@ -146,20 +164,31 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         };
     }
 
+    /**
+     * OnResume method
+     */
     @Override
     public void onResume() {
         super.onResume();
         mOrientationListener.enable();
     }
 
+    /**
+     * OnPause method
+     */
     @Override
     public void onPause() {
         super.onPause();
         mOrientationListener.disable();
     }
 
+    /**
+     * OnClick method, triggered whenever click event happens on the registered UI views
+     * @param v
+     */
     @Override
     public void onClick(View v) {
+        // Detect clicked view, and execute actions accordingly
         switch(v.getId()) {
             case R.id.openPictureBtn:
                 closeCurrentFilterConfig();
@@ -199,10 +228,18 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     }
 
+    /**
+     * Get device orientation (Configuration.ORIENTATION_PORTRAIT or Configuration.ORIENTATION_LANDSCAPE)
+     * @return
+     */
     public int getOrientation() {
         return mOrientation;
     }
 
+    /**
+     * Switch to Gallery Picture View mode, and display picture from the given filepath
+     * @param pictureFilePath
+     */
     private void openPictureFilterViewer(String pictureFilePath) {
         mFilterManager.reset();
         if(!mPictureViewerFragment.isVisible()) {
@@ -220,6 +257,9 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     }
 
+    /**
+     * Switch to Camera View mode
+     */
     private void openCameraFilterViewer() {
         if(!mCameraViewerFragment.isVisible()) {
 
@@ -239,6 +279,9 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     }
 
+    /**
+     * Open picture from gallery, by using 'Select Picture' intent
+     */
     private void openPicture() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -246,6 +289,12 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
+    /**
+     * Callback for 'Select Picture' intent result
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -260,16 +309,20 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
                 cursor.moveToFirst();
 
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                // Get selected picture filepath
                 String pictureFilePath = cursor.getString(columnIndex);
                 cursor.close();
                 Log.d(TAG, "Picture picked- " + pictureFilePath);
 
-                //mFilterManager.reset();
+                // Switch to picture view mode, loading the selected picture
                 openPictureFilterViewer(pictureFilePath);
             }
         }
     }
 
+    /**
+     * Open filter selector panel, to choose between different image filters
+     */
     private void openFilterSelector() {
         if(!mFilterSelectorFragment.isVisible()) {
             mSelectFilterBtn.setImageResource(R.drawable.icon_btn_filters_on);
@@ -283,6 +336,9 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     }
 
+    /**
+     * Close filter selector panel, if opened
+     */
     private void closeFilterSelector() {
         if(mFilterSelectorFragment.isVisible()) {
             mSelectFilterBtn.setImageResource(R.drawable.icon_btn_filters_off);
@@ -294,6 +350,10 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     }
 
+    /**
+     * FilterSelectorListener callback implementation, triggered on selecting any new filter
+     * @param filterType
+     */
     @Override
     public void onFilterSelect(FilterType filterType) {
         if(mFilterManager.getCurrentFilter()==null || filterType != mFilterManager.getCurrentFilter().getType()) {
@@ -302,10 +362,15 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
             if (mPictureViewerFragment.isVisible()) {
                 mPictureViewerFragment.updatePicture();
             }
+            // Display selected filter name as Toast
             displayMessage(filterType.toString());
         }
     }
 
+    /**
+     * Returns true if filter configuration panel is opened, else returns false
+     * @return
+     */
     private boolean isFilterConfigVisible() {
         if(mFilterConfigFragment!=null && mFilterConfigFragment.isVisible())
             return true;
@@ -313,6 +378,9 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
             return false;
     }
 
+    /**
+     * Open filter configuration panel with current filter specific settings
+     */
     private void openCurrentFilterConfig() {
         if (mFilterManager.getCurrentFilter()!=null && !isFilterConfigVisible()) {
 
@@ -328,6 +396,9 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     }
 
+    /**
+     * Close filter configuration panel
+     */
     private void closeCurrentFilterConfig() {
         if (isFilterConfigVisible()) {
             mConfigFilterBtn.setImageResource(R.drawable.icon_btn_settings_off);
@@ -339,21 +410,32 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }
     }
 
+    /**
+     * FilterConfigListener callback implementation triggered whenever filter config sliders are moved
+     */
     @Override
     public void onFilterConfigChanged() {
         if(mPictureViewerFragment.isVisible())
             mPictureViewerFragment.updatePicture();
     }
 
+    /**
+     * Save given bitmap to memory
+     * @param bitmap
+     */
     private void saveBitmap(Bitmap bitmap) {
         try {
             String savedPicturePath = Utils.saveBitmap(this, bitmap);
             Log.d(TAG, "Saved picture at "+savedPicturePath);
         } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), "Error: Unable to take picture", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error: Unable to save picture", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Display message text on screen for short interval
+     * @param msg
+     */
     private void displayMessage(String msg) {
         mMsgTextView.setText(msg);
         mMsgTextView.setAlpha(1);
@@ -371,14 +453,29 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
         }, 1000);
     }
 
+    /**
+     * Returns true if device orientation is Landscape
+     * @param orientation
+     * @return
+     */
     private boolean isOrientationLandscape(int orientation) {
         return orientation >= (270 - ORIENTATION_THRESH) && orientation <= (270 + ORIENTATION_THRESH);
     }
 
+    /**
+     * Returns true if deveice orientation is Portrait
+     * @param orientation
+     * @return
+     */
     private boolean isOrientationPortrait(int orientation) {
         return (orientation >= (360 - ORIENTATION_THRESH) && orientation <= 360) || (orientation >= 0 && orientation <= ORIENTATION_THRESH);
     }
 
+    /**
+     * Load sketch texture resource and pass it to native image filters library
+     * @param res
+     * @param sketchTexRes
+     */
     private void loadSketchTexture(Resources res, int sketchTexRes) {
         Mat mat, tempMat;
         Bitmap bmp = BitmapFactory.decodeResource(res, sketchTexRes);

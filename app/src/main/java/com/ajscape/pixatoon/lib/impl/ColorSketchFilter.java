@@ -7,7 +7,7 @@ import com.ajscape.pixatoon.lib.Native;
 import org.opencv.core.Mat;
 
 /**
- * Created by AtulJadhav on 9/20/2015.
+ * Color-Sketch filter implementation
  */
 public class ColorSketchFilter extends Filter {
 

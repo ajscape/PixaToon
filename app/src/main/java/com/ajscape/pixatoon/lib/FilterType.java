@@ -1,7 +1,7 @@
 package com.ajscape.pixatoon.lib;
 
 /**
- * Created by AtulJadhav on 9/21/2015.
+ * Enum for supported image filter types
  */
 public enum FilterType {
     COLOR_CARTOON("Color Cartoon"),

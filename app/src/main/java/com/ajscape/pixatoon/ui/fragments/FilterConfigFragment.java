@@ -15,7 +15,7 @@ import com.ajscape.pixatoon.ui.interfaces.FilterConfigListener;
 import java.util.List;
 
 /**
- * Created by atuljadhav on 12/4/2015.
+ * Filter Configuration Panel implemented as fragment
  */
 public class FilterConfigFragment extends Fragment {
 

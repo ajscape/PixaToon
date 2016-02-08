@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Created by AtulJadhav on 10/2/2015.
+ * UI Utility functions
  */
 public class Utils {
     public static final String TAG = "Utils:";
@@ -28,6 +28,13 @@ public class Utils {
 
     private static int lastSaveFileIndex = 0;
 
+    /**
+     * Reize bitmap with dimensions equal to or less than given params, without changing the aspect ratio
+     * @param bitmap    Input bitmap
+     * @param maxWidth  Max allowed width of resized Bitmap
+     * @param maxHeight Max allowed height of resized Bitmap
+     * @return Resized bitmap
+     */
     public static Bitmap resizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight) {
         if (maxHeight > 0 && maxWidth > 0) {
             int width = bitmap.getWidth();
@@ -49,9 +56,17 @@ public class Utils {
         }
     }
 
+    /**
+     * Save bitmap as JPEG with a incremental filename, in the SAVE_FOLDER directory
+     * @param activity
+     * @param bitmap
+     * @return
+     * @throws IOException
+     */
     public static String saveBitmap(Activity activity, Bitmap bitmap) throws IOException {
         File file;
         try {
+            // Create a new save file
             file = createSaveFile();
             OutputStream fOut = new FileOutputStream(file);
             // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
@@ -72,12 +87,24 @@ public class Utils {
         return file.getPath();
     }
 
+    /**
+     * Rotate bitmap by given angle in degrees
+     * @param bitmap
+     * @param angle
+     * @return
+     */
     public static Bitmap rotateBitmap(Bitmap bitmap, int angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
+    /**
+     * Create a new save file in the SAVE_FOLDER directory with name as '<SAVE_FILENAME_PREFIX>_<3 digit serial number>'
+     * ( example: IMG_001)
+     * @return
+     * @throws IOException
+     */
     private static File createSaveFile() throws IOException {
         File file;
         String path = Environment.getExternalStorageDirectory().toString();

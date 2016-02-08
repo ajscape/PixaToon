@@ -1,8 +1,12 @@
 package com.ajscape.pixatoon.ui.interfaces;
 
 /**
- * Created by AtulJadhav on 9/29/2015.
+ * Filter Configuration Change Listener interface
  */
 public interface FilterConfigListener {
+
+    /**
+     * Callback method on changing any of current filter configuration settings
+     */
     void onFilterConfigChanged();
 }

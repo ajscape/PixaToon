@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by AtulJadhav on 9/20/2015.
+ * Abstract Base class for image filter implementation
  */
 public abstract class Filter {
 
+    /**
+     * Class representing Filter Configuration parameter
+     */
     public class FilterConfig {
         public String name;
         public int value;
@@ -20,20 +23,36 @@ public abstract class Filter {
         }
     }
 
+    // Filter type
     protected FilterType mFilterType;
+
+    // Filter processing scaling factor (low value will reduce image processing size, reducing processing delay but sacrificing image quality)
     protected double mDefaultScaleFactor;
+
     protected List<FilterConfig> mFilterConfigs;
 
+    /**
+     * Constructor to initialize filter with FilterType enum
+     * @param mFilterType
+     */
     public Filter(FilterType mFilterType) {
         this.mFilterType = mFilterType;
         this.mDefaultScaleFactor = 1.0;
         mFilterConfigs = new ArrayList<>();
     }
 
+    /**
+     * Returns list of filter config params
+     * @return
+     */
     public List<FilterConfig> getFilterConfigs() {
         return mFilterConfigs;
     }
 
+    /**
+     * Returns filter type enum value
+     * @return
+     */
     public FilterType getType() {
         return mFilterType;
     }
@@ -42,7 +61,15 @@ public abstract class Filter {
         return mDefaultScaleFactor;
     }
 
+    /**
+     * Abstract method to apply filter to src, and pass result as dst (to be implemented by derived classes)
+     * @param src
+     * @param dst
+     */
     public abstract void process(Mat src, Mat dst);
 
+    /**
+     * Abstract method to reset filter config values to default (to be implemented by derived classes)
+     */
     public abstract void resetConfig();
 }

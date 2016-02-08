@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 import com.ajscape.pixatoon.ui.Utils;
 
 /**
- * Created by atuljadhav on 11/16/2015.
+ * Picture View implementation using SurfaceView, for rendering gallery pictures with filter effects
  */
 public class PictureSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
