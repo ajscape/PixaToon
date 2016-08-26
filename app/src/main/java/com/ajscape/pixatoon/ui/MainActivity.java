@@ -1,7 +1,9 @@
 package com.ajscape.pixatoon.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -9,9 +11,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.SensorManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -46,6 +51,7 @@ import java.util.TimerTask;
 public class MainActivity extends Activity implements FilterSelectorListener, FilterConfigListener, View.OnClickListener {
 
     private static final int SELECT_PICTURE = 1;
+    private static final int REQUEST_PERMISSIONS = 2;
     private static final String TAG = "MainActivity";
 
     private static final int ORIENTATION_THRESH = 10;
@@ -92,6 +98,8 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        checkAndRequestPermissions();
 
 //      //  Hide navigation buttons and go full-screen, for devices without hardware navigation buttons
 //      getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -225,6 +233,31 @@ public class MainActivity extends Activity implements FilterSelectorListener, Fi
             case R.id.filterViewer:
                 closeCurrentFilterConfig();
                 closeFilterSelector();
+        }
+    }
+
+    public void checkAndRequestPermissions() {
+        if(Build.VERSION.SDK_INT > 22) {
+            String[] permissions = { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE };
+            if (ContextCompat.checkSelfPermission(this, permissions[0]) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissions,REQUEST_PERMISSIONS);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length >= 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    return;
+                } else {
+                    finish();
+                }
+            }
         }
     }
 
